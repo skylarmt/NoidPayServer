@@ -1,0 +1,10 @@
+array(4) {
+  ["username"]=>
+  string(8) "skylarmt"
+  ["password"]=>
+  string(8) "skylar11"
+  ["type"]=>
+  string(1) "1"
+  ["foobarjunkdata"]=>
+  string(1) "0"
+}
