@@ -1,4 +1,4 @@
-'<?php
+<?php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -10,8 +10,8 @@ require 'required.php';
 
 $username = $VARS['username'];
 $password = $VARS['password'];
-$merchant = $VARS['merchant'];
+$VARS['merchantid'] = $VARS['merchant'];
 
-require 'killOnUserPassError.php';
+require 'killOnMerchantLoginError.php';
 
 sendOK();

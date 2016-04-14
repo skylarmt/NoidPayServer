@@ -42,6 +42,10 @@ if (!$database->has('membership', ["AND" => ['users_userid' => $recuserid, 'merc
     sendError('The receipient does not have an account with this merchant.', true);
 }
 
+if ($amount <= 0) {
+    sendError("Amount must be more than zero!", true);
+}
+
 $balance = $database->select('balances', ['balance'], ["AND" => ["users_userid" => $userid, "balancetypes_typeid" => $balancetype, "merchants_merchantid" => $merchant]])[0]['balance'];
 
 if ($balance >= $amount) {

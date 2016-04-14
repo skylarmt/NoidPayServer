@@ -31,7 +31,11 @@ try {
 define("DEBUG", false);
 
 // Use GET instead of POST?
-define("GET", false);
+if ($_GET['get'] == '1') {
+    define("GET", true);
+} else {
+    define("GET", false);
+}
 
 // Mail settings
 $mail = new PHPMailer;

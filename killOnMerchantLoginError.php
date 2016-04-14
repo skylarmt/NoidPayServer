@@ -1,4 +1,14 @@
 <?php
+// Too lazy to be consistent
+if (is_empty($VARS['merchantid'])) {
+    $VARS['merchantid'] = $VARS['merchant'];
+}
+
+// Still empty, uh-oh
+if (is_empty($VARS['merchantid'])) {
+    sendError('No merchant specified.', true);
+}
+
 if (!$database->has('merchantlogins', ['AND' => ['username' => $VARS['username'], 'merchants_merchantid' => $VARS['merchantid']]])) {
     sendError('Invalid login.', true);
 }
