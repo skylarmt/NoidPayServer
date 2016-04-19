@@ -10,7 +10,7 @@ $amount = filter_var($VARS['amt'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALL
 $merchant = filter_var($VARS['merchant'], FILTER_SANITIZE_NUMBER_INT);
 
 if (is_empty($VARS['amt']) || is_empty($VARS['merchant'])) {
-    die('Error: Missing required information.');
+    sendError('Error: Missing required information.', true);
 }
 
 $transid = $database->insert('transactions', ['merchantid' => $merchant, 'transamt' => $amount, 'statuscode' => 1, '#transdate' => "NOW()"]);

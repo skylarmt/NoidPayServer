@@ -1,15 +1,15 @@
 <?php
-ob_start();
+
 /**
  * This file contains global settings and things that should be loaded at the
  * top of each file.
  */
-header("Access-Control-Allow-Origin: *");
-
 if (strtolower($_GET['format']) == 'json') {
     define("JSON", true);
+    header("Content-Type: application/json");
 } else {
     define("JSON", false);
+    header("Content-Type: text/plain");
 }
 
 // Composer
@@ -157,5 +157,3 @@ function encryptPassword($password) {
 function comparePassword($password, $hash) {
     return password_verify($password, $hash);
 }
-
-header("Access-Control-Allow-Credentials: false");

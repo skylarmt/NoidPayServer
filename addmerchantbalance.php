@@ -31,6 +31,18 @@ if (is_empty($amount) || is_empty($balancetype) ) {
     sendError('Missing required information (amt or type)', true);
 }
 
+$bal = $database->select('balances', 'balance', [
+    "AND" => [
+        'users_userid' => $userid,
+        'balancetypes_typeid' => $balancetype,
+        'merchants_merchantid' => $merchant
+    ]
+])[0];
+
+if ($amount < 0 && $bal < ($amount * -1)) {
+    sendError('This operation would result in a negative balance and has been blocked.', true);
+}
+
 $database->update('balances', ['balance[+]' => $amount], [
     "AND" => [
         'users_userid' => $userid,

@@ -11,7 +11,7 @@ $balancetype = filter_var($VARS['type'], FILTER_SANITIZE_NUMBER_INT);
 $transID = filter_var($VARS['transid'], FILTER_SANITIZE_NUMBER_INT);
 
 if (is_empty($balancetype) || is_empty($transID)) {
-    die('Error: Missing required information.');
+    sendError('Missing required information.', true);
 }
 
 $userinfo = $database->select('users', ['email', 'realname', 'userid'], ['username' => $username])[0];
