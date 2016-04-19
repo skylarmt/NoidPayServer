@@ -4,8 +4,8 @@ if (is_empty($VARS['merchantid'])) {
     $VARS['merchantid'] = $VARS['merchant'];
 }
 
-// Still empty, uh-oh
 if (is_empty($VARS['merchantid'])) {
+    // Still empty, uh-oh
     sendError('No merchant specified.', true);
 }
 
