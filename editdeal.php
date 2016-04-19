@@ -3,29 +3,37 @@
 require 'required.php';
 require 'killOnMerchantLoginError.php';
 
-if (is_empty($VARS['dealid'])) {
-    sendError("Missing required dealid.", true);
-}
+
+$dealid = (is_empty($VARS['dealid']) ? -1 : $VARS['dealid']);
+
 
 if ($VARS['action'] == 'get') {
+    if (is_empty($VARS['dealid'])) {
+        sendError("Missing required dealid.", true);
+    }
     $deal = $database->select('deals', [
-        'dealid',
-        'dealtitle',
-        'dealhtml',
-        'validafter',
-        'validbefore'
-            ], [
-        'AND' => [
-            'dealid' => $VARS['dealid'],
-            'merchantid' => $VARS['merchantid']
-        ]
-    ])[0];
+                'dealid',
+                'dealtitle',
+                'dealhtml',
+                'validafter',
+                'validbefore'
+                    ], [
+                'AND' => [
+                    'dealid' => $dealid,
+                    'merchantid' => $VARS['merchantid']
+                ]
+            ])[0];
     $deal['status'] = 'OK';
-    return json_encode($deal);
+    $deal['validafter'] = date('Y-m-d', strtotime($deal['validafter']));
+    $deal['validbefore'] = date('Y-m-d', strtotime($deal['validbefore']));
+    echo json_encode($deal);
 } else if ($VARS['action'] == 'delete') {
-    $database->delete('deals', ['AND' => ['merchantid' => $VARS['merchantid'], 'dealid' => $VARS['dealid']]]);
+    if (is_empty($dealid)) {
+        sendError("Missing required dealid.", true);
+    }
+    $database->delete('deals', ['AND' => ['merchantid' => $VARS['merchantid'], 'dealid' => $dealid]]);
     sendOK('', true);
-} else if ($VARS['action'] == 'edit') {
+} else if ($VARS['action'] == 'edit' || $VARS['action'] == 'new') {
     // Check if everything is here
     if (is_empty($VARS['title'])) {
         sendError('Missing title!', true);
@@ -51,17 +59,36 @@ if ($VARS['action'] == 'get') {
     }
 
     // Everything seems legit by now
-    $database->insert(
-            'deals', [
-        'merchantid' => $VARS['merchantid'],
-        'dealtitle' => $VARS['title'],
-        'dealhtml' => $VARS['content'],
-        'validafter' => $vaf,
-        'validbefore' => $vbf,
-        'dealhasurl' => 0,
-        'dealurl' => 'about:blank'
+    if ($VARS['action'] == 'edit') {
+        $database->update(
+                'deals', [
+            'merchantid' => $VARS['merchantid'],
+            'dealtitle' => $VARS['title'],
+            'dealhtml' => $VARS['content'],
+            'validafter' => $vaf,
+            'validbefore' => $vbf,
+            'dealhasurl' => 0,
+            'dealurl' => 'about:blank'
+                ], [
+            'AND' => [
+                'dealid' => $VARS['dealid'],
+                'merchantid' => $VARS['merchantid']
             ]
-    );
+        ]);
+    } else {
+        $dealid = $database->insert(
+                'deals', [
+            'merchantid' => $VARS['merchantid'],
+            'dealtitle' => $VARS['title'],
+            'dealhtml' => $VARS['content'],
+            'validafter' => $vaf,
+            'validbefore' => $vbf,
+            'dealhasurl' => 0,
+            'dealurl' => 'about:blank'
+                ]
+        );
+    }
+    sendOK($dealid, true);
 } else {
     sendError('No or invalid action specified.', true);
 }
