@@ -1,6 +1,6 @@
 <?php
 require 'required.php';
-
+header('Content-Type: text/html');
 $VARS = $_GET;
 
 if (is_empty($VARS['dealid'])) {
