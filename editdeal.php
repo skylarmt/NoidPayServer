@@ -7,7 +7,22 @@ if (is_empty($VARS['dealid'])) {
     sendError("Missing required dealid.", true);
 }
 
-if ($VARS['action'] == 'delete') {
+if ($VARS['action'] == 'get') {
+    $deal = $database->select('deals', [
+        'dealid',
+        'dealtitle',
+        'dealhtml',
+        'validafter',
+        'validbefore'
+            ], [
+        'AND' => [
+            'dealid' => $VARS['dealid'],
+            'merchantid' => $VARS['merchantid']
+        ]
+    ])[0];
+    $deal['status'] = 'OK';
+    return json_encode($deal);
+} else if ($VARS['action'] == 'delete') {
     $database->delete('deals', ['AND' => ['merchantid' => $VARS['merchantid'], 'dealid' => $VARS['dealid']]]);
     sendOK('', true);
 } else if ($VARS['action'] == 'edit') {
