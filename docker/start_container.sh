@@ -6,7 +6,7 @@ if [ ! -f /mysql-configured ]; then
     echo mysql root password: $MYSQL_PASSWORD
     echo $MYSQL_PASSWORD > /mysql-root-pw.txt
     mysqladmin -u root password $MYSQL_PASSWORD
-    sed -i -e "s/PASS_WORD/${MYSQL_PASSWORD}/" /var/www/html/database_config.php.new
+    sed -i -e "s/'PASS_WORD'/${MYSQL_PASSWORD}/" /var/www/html/database_config.php.new
     mv /var/www/html/database_config.php.new /var/www/html/database_config.php
     mysql -e "source /create.sql;" -u root -p${MYSQL_PASSWORD}
     touch /mysql-configured
