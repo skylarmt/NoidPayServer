@@ -3,8 +3,7 @@ FROM ubuntu:trusty
 MAINTAINER Skylar Ittner <admin@netsyms.com>
 
 # Install packages
-RUN echo "Updating container..." && apt-get update && apt-get upgrade -y
-RUN echo "Installing packages..." && apt-get -y install mysql-client mysql-server apache2 libapache2-mod-php5 pwgen python-setuptools vim-tiny nano php5-mysql php5-curl php5-gd php5-apcu nodejs npm curl git
+RUN echo "Installing packages..." && apt-get update && apt-get -y install mysql-client mysql-server apache2 libapache2-mod-php5 pwgen python-setuptools vim-tiny phpmyadmin php5-mysql php5-curl php5-gd php5-apcu nodejs npm curl git
 ADD ./docker/foreground.sh /etc/apache2/foreground.sh
 RUN chmod 755 /etc/apache2/foreground.sh
 # Install Composer

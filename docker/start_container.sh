@@ -14,4 +14,4 @@ if [ ! -f /mysql-configured ]; then
     sleep 10s
 fi
 /etc/init.d/mysql restart
-/etc/init.d/apache2 restart
+apachectl -e info -DFOREGROUND
