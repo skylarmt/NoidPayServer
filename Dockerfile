@@ -4,13 +4,8 @@ MAINTAINER Skylar Ittner <admin@netsyms.com>
 
 RUN apt-get update && apt-get upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-client mysql-server apache2 libapache2-mod-php5 pwgen python-setuptools vim-tiny nano php5-mysql php5-gd php5-apcu nodejs npm curl git
-RUN easy_install supervisor
 ADD ./docker/foreground.sh /etc/apache2/foreground.sh
-ADD ./docker/supervisord.conf /etc/supervisord.conf
 RUN chmod 755 /etc/apache2/foreground.sh
-# Install dependencies 
-RUN apt-get install -y --no-install-recommends software-properties-common
-RUN apt-get install -y python git
 
 # nuke the webroot
 WORKDIR /var/www
