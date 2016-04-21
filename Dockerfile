@@ -16,7 +16,7 @@ RUN echo "Setting up web root..." && rm -rf html && mkdir html
 WORKDIR /var/www/html
 
 # install the server (private repo for now, thx GitHub Student)
-RUN echo "Cloning latest from Git..." && git clone https://skylarmt-script-account:scriptb0t@github.com/skylarmt/NoidPayServer.git .
+ADD . /var/www/html
 RUN rm -rf vendor && composer install
 # 0wn3d :)
 RUN cd .. && chown -R www-data:www-data html
